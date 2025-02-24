@@ -19,7 +19,7 @@ export const TAG_UNORDERED_LIST = "ul";
 /*------------------------------------------------------------------
  *                      PUBLIC METHODS
  */
-export const decodeEntities = function (text) {
+export const decodeEntities = function (text: string): string {
     // Replace all &mdash; entities with the actual mdash character.
     // If we have content in the future with other HTML entities, we
     // would need to update this method.  If this gets a bit bigger,
@@ -29,7 +29,7 @@ export const decodeEntities = function (text) {
     return text.replace("&mdash;", "—");
 };
 
-export const decorateNode = function (node, clazz, id) {
+export const decorateNode = function (node: HTMLElement, clazz?: string, id?: string): void {
     // Add class and/or id attributes as requested
 
     if (clazz) {
@@ -43,7 +43,12 @@ export const decorateNode = function (node, clazz, id) {
     }
 };
 
-export const domNode = function (tag, clazz, id, textContent) {
+export const domNode = function (
+    tag: string,
+    clazz?: string,
+    id?: string,
+    textContent?: string
+): HTMLElement {
     // Build a DOM node for the given tag type.
     // Note that because "class" is a reserved word, it's conventional
     // to use the word "clazz" as an identifier in C-like languages.
@@ -59,7 +64,12 @@ export const domNode = function (tag, clazz, id, textContent) {
     return node;
 };
 
-export const hyperlinkNode = function (href, title, clazz, id) {
+export const hyperlinkNode = function (
+    href: string,
+    title?: string,
+    clazz?: string,
+    id?: string
+): HTMLAnchorElement {
     // Build a hyperlink node with the given attributes
 
     const hyperlink = document.createElement(TAG_HYPERLINK);
@@ -77,7 +87,7 @@ export const hyperlinkNode = function (href, title, clazz, id) {
     return hyperlink;
 };
 
-export const replaceNodeContent = function (node, newChild) {
+export const replaceNodeContent = function (node: Node, newChild: Node): void {
     while (node.firstChild) {
         node.removeChild(node.firstChild);
     }

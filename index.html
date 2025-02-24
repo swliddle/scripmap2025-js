@@ -27,7 +27,7 @@
         <nav id="nav-root"></nav>
         <main id="map"></main>
         <script type="module">
-            import { init, onHashChanged, panAndZoom } from "./js/scriptures.js";
+            import { init, onHashChanged, panAndZoom } from "./dist/scriptures.js";
 
             function ready(readyListener) {
                 if (document.readyState === "loading") {
@@ -55,6 +55,6 @@
             });
         </script>
 
-        <script defer type="text/javascript" src="./js/Waves.js" />
+        <script defer type="text/javascript" src="./dist/Waves.js" />
     </body>
 </html>

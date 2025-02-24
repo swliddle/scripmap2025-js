@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rm -f ./dist/*.js
+
+tsc
+
+cd ./dist
+for FILE in *.js; do
+    terser $FILE -o $FILE --compress --mangle
+done
