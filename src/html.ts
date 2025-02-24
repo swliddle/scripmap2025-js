@@ -1,5 +1,5 @@
 /*======================================================================
- * FILE:    html.js
+ * FILE:    html.ts
  * AUTHOR:  Stephen W. Liddle
  * DATE:    Winter 2025
  *

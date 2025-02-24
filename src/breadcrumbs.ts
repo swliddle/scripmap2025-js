@@ -1,5 +1,5 @@
 /*======================================================================
- * FILE:    breadcrumbs.js
+ * FILE:    breadcrumbs.ts
  * AUTHOR:  Stephen W. Liddle
  * DATE:    Winter 2025
  *
@@ -28,13 +28,13 @@ const ID_CRUMBS_COMPLEMENT = "crumbs-complement";
 /*----------------------------------------------------------------------
  *                      PRIVATE VARIABLES
  */
-let crumbsElement;
-let crumbsComplementElement;
+let crumbsElement: HTMLElement | null;
+let crumbsComplementElement: HTMLElement | null;
 
 /*----------------------------------------------------------------------
  *                      PRIVATE FUNCTIONS
  */
-const breadcrumbsNode = function (textContent, href) {
+const breadcrumbsNode = function (textContent: string, href?: string): HTMLElement {
     const listItem = domNode(TAG_LIST_ITEM);
     const textNode = document.createTextNode(textContent);
 
@@ -53,7 +53,11 @@ const breadcrumbsNode = function (textContent, href) {
 /*----------------------------------------------------------------------
  *                      PUBLIC FUNCTIONS
  */
-export const configureBreadcrumbs = function (volumeId, bookId, chapter) {
+export const configureBreadcrumbs = function (
+    volumeId?: number,
+    bookId?: number,
+    chapter?: number
+): void {
     const crumbs = domNode(TAG_UNORDERED_LIST);
 
     if (volumeId === undefined) {
@@ -75,7 +79,7 @@ export const configureBreadcrumbs = function (volumeId, bookId, chapter) {
                 crumbs.appendChild(breadcrumbsNode(book.backName, `#${volume.id}:${bookId}`));
 
                 if (book.numChapters > 0) {
-                    crumbs.appendChild(breadcrumbsNode(chapter));
+                    crumbs.appendChild(breadcrumbsNode(`${chapter}`));
                 }
             }
         }
@@ -87,6 +91,11 @@ export const configureBreadcrumbs = function (volumeId, bookId, chapter) {
         crumbsComplementElement = document.getElementById(ID_CRUMBS_COMPLEMENT);
     }
 
-    replaceNodeContent(crumbsElement, crumbs);
-    replaceNodeContent(crumbsComplementElement, crumbs.cloneNode(true));
+    if (crumbsElement) {
+        replaceNodeContent(crumbsElement, crumbs);
+    }
+
+    if (crumbsComplementElement) {
+        replaceNodeContent(crumbsComplementElement, crumbs.cloneNode(true));
+    }
 };
