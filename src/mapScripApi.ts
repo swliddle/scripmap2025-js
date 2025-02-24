@@ -7,6 +7,11 @@
  */
 
 /*----------------------------------------------------------------------
+ *                      IMPORTS
+ */
+import { Book, Books, SuccessCallback, Volume } from "./types.js";
+
+/*----------------------------------------------------------------------
  *                      CONSTANTS
  */
 const URL_BASE = "https://scriptures.byu.edu/mapscrip/";
@@ -17,13 +22,13 @@ const URL_VOLUMES = `${URL_BASE}model/volumes.php`;
 /*----------------------------------------------------------------------
  *                      PUBLIC VARIABLES
  */
-export let books;
-export let volumes;
+export let books: Books = {};
+export let volumes: Volume[] = [];
 
 /*----------------------------------------------------------------------
  *                      PRIVATE FUNCTIONS
  */
-const cacheBooks = function (callback) {
+const cacheBooks = function (callback: () => void) {
     // We have both volumes and books from the server, so here we
     // build an array of books for each volume so it's easy to get
     // the books when we have a volume object.  This is helpful,
@@ -50,7 +55,12 @@ const cacheBooks = function (callback) {
     }
 };
 
-const encodedScripturesUrl = function (bookId, chapter, verses, isJst) {
+const encodedScripturesUrl = function (
+    bookId: number,
+    chapter: number,
+    verses?: string,
+    isJst?: boolean
+): string {
     if (bookId !== undefined && chapter !== undefined) {
         let options = "";
 
@@ -64,12 +74,14 @@ const encodedScripturesUrl = function (bookId, chapter, verses, isJst) {
 
         return `${URL_SCRIPTURES}?book=${bookId}&chap=${chapter}&verses${options}`;
     }
+
+    return "";
 };
 
 /*----------------------------------------------------------------------
  *                      PUBLIC FUNCTIONS
  */
-export const apiInit = function (callback) {
+export const apiInit = function (callback: () => void) {
     Promise.all(
         [URL_VOLUMES, URL_BOOKS].map((url) => fetch(url).then((response) => response.json()))
     ).then(([jsonVolumes, jsonBooks]) => {
@@ -82,7 +94,12 @@ export const apiInit = function (callback) {
     });
 };
 
-export const requestChapterText = function (bookId, chapter, success, failure) {
+export const requestChapterText = function (
+    bookId: number,
+    chapter: number,
+    success: SuccessCallback,
+    failure: () => void
+) {
     fetch(encodedScripturesUrl(bookId, chapter))
         .then((response) => {
             const html = response.text();
@@ -92,6 +109,6 @@ export const requestChapterText = function (bookId, chapter, success, failure) {
         .catch(failure);
 };
 
-export const volumeIdIsValid = function (volumeId) {
+export const volumeIdIsValid = function (volumeId: number): boolean {
     return volumes.map((volume) => volume.id).includes(volumeId);
 };

@@ -24,3 +24,5 @@ export interface Volume extends Book {
     maxBookId: number;
     books: Book[];
 }
+
+export type SuccessCallback = (text: Promise<string>) => void;
